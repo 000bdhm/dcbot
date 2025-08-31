@@ -627,8 +627,8 @@ bot.on('ready', async () => {
     setInterval(updateMemberCount, 500 * 1000);
     
     // Set bot status
-    bot.editStatus('online', {
-        name: `${config.prefix}help | ${bot.guilds.size} servers`,
+    bot.editStatus('idle', {
+        name: `Try to fart as hard as you can | but you can shit your pants`,
         type: 0
     });
 });
