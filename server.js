@@ -1,4 +1,5 @@
-
+const app = express();
+const port = 3000;
 const Eris = require('eris');
 const axios = require('axios');
 require('dotenv').config();
