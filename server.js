@@ -3,7 +3,6 @@ const app = express();
 const Eris = require('eris');
 const axios = require('axios');
 require('dotenv').config();
-
 // Eris istemcisini başlat
 const bot = new Eris(process.env.DISCORD_BOT_TOKEN, {
     restMode: true,
@@ -16,7 +15,7 @@ const authorizedUsers = [
     '558664937061482516'
 ];
 // Geçerli komutlar
-const validCommands = ['announce', 'ping', 'uptime'];
+const validCommands = ['ping', 'uptime', 'help'];
 // Botun başlama zamanı (uptime için)
 const startTime = Date.now();
 // Roblox API URL
@@ -85,7 +84,7 @@ bot.on('ready', async () => {
         // İlk güncellemeyi yap
         await updateChannelName();
         // Her 50 saniyede bir güncelle (not: orijinal kodda interval değeri tutarsızdı, yorumdaki 50 saniyeye göre düzelttim)
-        setInterval(updateChannelName, 50 * 1000);
+        setInterval(updateChannelName, 500 * 1000);
     } catch (error) {
         console.error('Kanal güncelleme hatası:', error.message);
     }
@@ -108,18 +107,6 @@ bot.on('messageCreate', async (msg) => {
         }
         return;
     }
-    if (command === 'announce') {
-        if (args.length < 1) {
-            await msg.channel.createMessage('Lütfen bir duyuru mesajı sağlayın! Örnek: `n!announce Merhaba, bu bir duyuru!`');
-            return;
-        }
-        const announcement = args.join(' ');
-        try {
-            await msg.channel.createMessage(`📢 **Duyuru**: ${announcement}`);
-        } catch (error) {
-            await msg.channel.createMessage(`Duyuru gönderilirken hata: ${error.message}`);
-        }
-    }
     if (command === 'ping') {
         const sentMessage = await msg.channel.createMessage('!pong');
         const latency = sentMessage.createdAt - msg.createdAt;
@@ -139,16 +126,17 @@ bot.on('messageCreate', async (msg) => {
         ].filter(Boolean).join(', ');
         await msg.channel.createMessage(`Uptime: ${uptimeStr || '0 saniye'}`);
     }
+    if (command === 'help') {
+        await msg.channel.createMessage(`Geçerli komutlar: ${validCommands.map(c => `\`${prefix}${c}\``).join(', ')}.`);
+    }
 });
 // Hataları yakala
 process.on('unhandledRejection', (error) => console.error('Yakalanmamış hata:', error));
 bot.on('error', (error) => console.error('Bağlantı hatası:', error));
-
 // Express sunucusunu başlat (Render için port binding)
 const serverPort = process.env.PORT || 3000;
 app.listen(serverPort, () => {
     console.log(`Server running on port ${serverPort}`);
 });
-
 // Botu bağla
 bot.connect();
