@@ -624,7 +624,7 @@ bot.on('ready', async () => {
     await updateMemberCount();
     
     // Set up interval for member count updates (every 50 seconds)
-    setInterval(updateMemberCount, 500 * 1000);
+    setInterval(updateMemberCount, 5000 * 1000);
     
     // Set bot status
     bot.editStatus('idle', {
