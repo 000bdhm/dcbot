@@ -628,7 +628,7 @@ bot.on('ready', async () => {
     
     // Set bot status
     bot.editStatus('idle', {
-        name: `Try to fart as hard as you can | but you can shit your pants`,
+        name: `goktug pampa on top`,
         type: 0
     });
 });
